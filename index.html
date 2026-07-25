@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Index</title>
+<title>Log</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -30,16 +30,9 @@
   ::selection{background:var(--ink);color:var(--paper);}
   :focus-visible{outline:2px solid var(--ink);outline-offset:2px;}
 
-  a{color:inherit;text-decoration:none;}
-  a.link{border-bottom:1px solid var(--ink);}
-  a.link:hover{background:var(--ink);color:var(--paper);}
-
   .frame{
     border:1px solid var(--ink);
-    margin:0.75rem;
-    min-height:calc(100vh - 1.5rem);
-    display:flex;
-    flex-direction:column;
+    margin:0.75rem 0.75rem 0;
   }
 
   /* ---------- masthead ---------- */
@@ -47,169 +40,128 @@
   .bar{
     display:flex;
     justify-content:space-between;
-    align-items:baseline;
+    align-items:center;
     gap:1rem;
-    padding:0.55rem 1.1rem;
+    padding:0.5rem 1rem;
     border-bottom:1px solid var(--ink);
     font-size:0.625rem;
     letter-spacing:0.2em;
     text-transform:uppercase;
   }
 
-  /* ---------- nav ---------- */
+  .masthead{
+    padding:2.75rem 1.25rem 2rem;
+    border-bottom:1px solid var(--ink);
+  }
 
-  nav{
+  .masthead h1{
+    font-family:var(--display);
+    font-weight:400;
+    font-size:clamp(2.5rem,11vw,4.5rem);
+    line-height:0.92;
+    letter-spacing:-0.015em;
+    margin:0 0 0.9rem;
+  }
+
+  .masthead p{
+    font-size:0.8125rem;
+    max-width:30rem;
+    margin:0;
+  }
+
+  /* ---------- filter ---------- */
+
+  .filter{
     display:flex;
     border-bottom:1px solid var(--ink);
   }
 
-  nav a{
+  .filter button{
     flex:1;
-    text-align:center;
+    font-family:var(--mono);
     font-size:0.625rem;
     letter-spacing:0.18em;
     text-transform:uppercase;
-    padding:0.75rem 0.4rem;
-    border-right:1px solid var(--ink);
-  }
-  nav a:last-child{border-right:none;}
-  nav a:hover{background:#f1f1f1;}
-  nav a[aria-current="page"]{background:var(--ink);color:var(--paper);}
-
-  /* ---------- panels ---------- */
-
-  main{flex:1;}
-
-  .panel{display:none;}
-  .panel.is-active{display:block;}
-
-  .pad{padding:2.75rem 1.25rem;}
-  @media (min-width:760px){ .pad{padding:4rem 2.25rem;} }
-
-  h1{
-    font-family:var(--display);
-    font-weight:400;
-    font-size:clamp(2.5rem,10vw,4.75rem);
-    line-height:0.92;
-    letter-spacing:-0.015em;
-    margin:0 0 1.25rem;
-  }
-
-  h2{
-    font-family:var(--display);
-    font-weight:400;
-    font-size:clamp(1.625rem,5vw,2.25rem);
-    line-height:1.02;
-    letter-spacing:-0.01em;
-    margin:0 0 1rem;
-  }
-
-  h3{
-    font-family:var(--display);
-    font-weight:400;
-    font-size:1.375rem;
-    line-height:1.1;
-    margin:0 0 0.3rem;
-  }
-
-  .eyebrow{
-    font-size:0.625rem;
-    letter-spacing:0.24em;
-    text-transform:uppercase;
-    margin:0 0 1.75rem;
-  }
-
-  p{
-    font-size:0.8125rem;
-    line-height:1.8;
-    max-width:34rem;
-    margin:0 0 1rem;
-  }
-  p.lede{
-    font-family:var(--display);
-    font-size:clamp(1.0625rem,2.8vw,1.3125rem);
-    line-height:1.4;
-    max-width:30rem;
-  }
-  p:last-child{margin-bottom:0;}
-
-  hr{
+    background:var(--paper);
+    color:var(--ink);
     border:none;
-    border-top:1px solid var(--ink);
-    margin:0;
+    border-right:1px solid var(--ink);
+    border-radius:0;
+    padding:0.7rem 0.4rem;
+    cursor:pointer;
   }
+  .filter button:last-child{border-right:none;}
+  .filter button:hover{background:#f0f0f0;}
+  .filter button[aria-pressed="true"]{background:var(--ink);color:var(--paper);}
 
-  /* ---------- lists ---------- */
+  /* ---------- entries ---------- */
 
-  .row{
+  .entry{
     display:grid;
     grid-template-columns:1fr;
-    gap:0.35rem;
-    padding:1.35rem 1.25rem;
+    gap:0;
     border-bottom:1px solid var(--ink);
+    padding:1.5rem 1.25rem 1.75rem;
   }
+
   @media (min-width:760px){
-    .row{
-      grid-template-columns:8.5rem 1fr;
+    .entry{
+      grid-template-columns:9rem 1fr;
       gap:2rem;
-      padding:1.5rem 2.25rem;
+      padding:1.75rem 1.5rem 2rem;
     }
   }
-  .row:last-child{border-bottom:none;}
 
-  .row__rail{
+  .entry__rail{
     font-size:0.625rem;
     letter-spacing:0.16em;
     text-transform:uppercase;
+    padding-bottom:0.75rem;
   }
 
-  .tag{
+  @media (min-width:760px){
+    .entry__rail{padding-bottom:0;}
+  }
+
+  .entry__rail .tag{
     display:inline-block;
     border:1px solid var(--ink);
-    padding:0.05rem 0.4rem;
-    font-size:0.5625rem;
-    letter-spacing:0.14em;
-    text-transform:uppercase;
+    padding:0.1rem 0.4rem;
+    margin-top:0.45rem;
   }
 
-  .row__meta{
+  .entry__body h2{
+    font-family:var(--display);
+    font-weight:400;
+    font-size:clamp(1.5rem,4.5vw,2.125rem);
+    line-height:1.05;
+    letter-spacing:-0.01em;
+    margin:0 0 0.35rem;
+  }
+
+  .entry__meta{
     font-size:0.6875rem;
+    letter-spacing:0.06em;
+    margin:0 0 0.9rem;
     opacity:0.7;
-    margin:0 0 0.55rem;
   }
 
-  .row__note{
+  .entry__body p{
     font-size:0.8125rem;
     line-height:1.75;
     max-width:34rem;
-    margin:0;
+    margin:0 0 0.8rem;
   }
-
-  .section-head{
-    display:flex;
-    justify-content:space-between;
-    align-items:baseline;
-    gap:1rem;
-    padding:1.1rem 1.25rem;
-    border-bottom:1px solid var(--ink);
-    font-size:0.625rem;
-    letter-spacing:0.2em;
-    text-transform:uppercase;
-  }
-  @media (min-width:760px){
-    .section-head{padding:1.1rem 2.25rem;}
-  }
+  .entry__body p:last-child{margin-bottom:0;}
 
   .empty{
-    padding:3.5rem 1.25rem;
+    padding:3rem 1.5rem;
     font-size:0.8125rem;
-    opacity:0.6;
+    border-bottom:1px solid var(--ink);
   }
-  @media (min-width:760px){ .empty{padding:3.5rem 2.25rem;} }
 
   footer{
-    padding:0.55rem 1.1rem;
-    border-top:1px solid var(--ink);
+    padding:0.5rem 1rem;
     display:flex;
     justify-content:space-between;
     font-size:0.625rem;
@@ -217,376 +169,269 @@
     text-transform:uppercase;
   }
 
-  /* ---------- error notice ---------- */
+  /* ---------- the runner ---------- */
 
-  #err{
-    display:none;
-    margin:0.75rem;
-    border:1px solid var(--ink);
-    padding:1.25rem;
-    font-size:0.8125rem;
-    line-height:1.7;
+  .runner{
+    position:fixed;
+    left:0;right:0;bottom:0;
+    height:5rem;
+    pointer-events:none;
+    z-index:40;
+    background:linear-gradient(to top, var(--paper) 55%, rgba(255,255,255,0));
   }
-  #err h2{
-    font-family:var(--display);
-    font-weight:400;
-    font-size:1.5rem;
-    margin:0 0 0.5rem;
+
+  .runner__ground{
+    position:absolute;
+    left:0.75rem;right:0.75rem;bottom:1.5rem;
+    height:1px;
+    background:var(--ink);
   }
-  #err p{margin:0;}
-  #err pre{
+
+  .runner__track{
+    position:absolute;
+    left:1rem;right:1rem;bottom:1.6rem;
+  }
+
+  #dog{
+    display:inline-block;
+    margin:0;
     font-family:var(--mono);
-    font-size:0.75rem;
-    white-space:pre-wrap;
-    background:#f1f1f1;
-    padding:0.75rem;
-    margin:0.75rem 0 0;
+    font-size:clamp(5px,1.3vw,9px);
+    line-height:1.05;
+    white-space:pre;
+    color:var(--ink);
+    transform-origin:50% 50%;
+    will-change:transform;
   }
+
+  .spacer{height:6rem;}
 </style>
 </head>
 <body>
 
-<div id="err">
-  <h2>The page couldn't start</h2>
-  <p>Something in the content block at the top of the file isn't valid. Usual causes: a missing comma between entries, curly quotes pasted from a word processor, or a property name containing a hyphen or a space without quotes around it.</p>
-  <pre id="errMsg"></pre>
-</div>
-
 <div class="frame">
 
   <div class="bar">
-    <span id="siteName">—</span>
-    <span id="siteRight">—</span>
+    <span>Log</span>
+    <span id="count">—</span>
   </div>
 
-  <nav id="nav" aria-label="Sections"></nav>
+  <div class="masthead">
+    <h1>Notes on<br>books and<br>a house</h1>
+    <p>An unsorted record of what I'm reading and what I'm doing to a cottage in Buckinghamshire. Kept mostly so I can remember what I decided and why.</p>
+  </div>
 
-  <main>
+  <div class="filter" role="group" aria-label="Filter entries">
+    <button type="button" data-filter="all" aria-pressed="true">All</button>
+    <button type="button" data-filter="reading" aria-pressed="false">Reading</button>
+    <button type="button" data-filter="house" aria-pressed="false">House</button>
+  </div>
 
-    <!-- INDEX -->
-    <section class="panel" data-route="index">
-      <div class="pad">
-        <p class="eyebrow" id="idxEyebrow"></p>
-        <h1 id="idxTitle"></h1>
-        <p class="lede" id="idxLede"></p>
-      </div>
-      <hr>
-      <div class="section-head">
-        <span>Recently</span>
-        <span>Latest four</span>
-      </div>
-      <div id="recent"></div>
-    </section>
-
-    <!-- READING -->
-    <section class="panel" data-route="reading">
-      <div class="pad">
-        <p class="eyebrow">Section 02</p>
-        <h2 id="readTitle"></h2>
-        <p id="readIntro"></p>
-      </div>
-      <hr>
-      <div class="section-head">
-        <span>The list</span>
-        <span id="readCount"></span>
-      </div>
-      <div id="readingList"></div>
-    </section>
-
-    <!-- HOUSE -->
-    <section class="panel" data-route="house">
-      <div class="pad">
-        <p class="eyebrow">Section 03</p>
-        <h2 id="houseTitle"></h2>
-        <p id="houseIntro"></p>
-      </div>
-      <hr>
-      <div class="section-head">
-        <span>Entries</span>
-        <span id="houseCount"></span>
-      </div>
-      <div id="houseList"></div>
-    </section>
-
-    <!-- ABOUT -->
-    <section class="panel" data-route="about">
-      <div class="pad">
-        <p class="eyebrow">Section 04</p>
-        <h2 id="aboutTitle"></h2>
-        <div id="aboutBody"></div>
-      </div>
-    </section>
-
-  </main>
+  <div id="feed"></div>
 
   <footer>
-    <span id="footLeft">—</span>
-    <span id="footRight">—</span>
+    <span>Static</span>
+    <span>No analytics</span>
   </footer>
 
 </div>
 
+<div class="spacer"></div>
+
+<div class="runner" aria-hidden="true">
+  <div class="runner__ground"></div>
+  <div class="runner__track"><pre id="dog"></pre></div>
+</div>
+
 <script>
 /* =====================================================================
-   EVERYTHING YOU EDIT IS IN THIS BLOCK.
+   ADD AN ENTRY HERE.
 
-   Add a reading entry     -> READING array
-   Add a renovation entry  -> HOUSE array
-   Change the wording      -> SITE and PAGES objects
+   Newest at the top. Only `date`, `type` and `title` are required.
+     date  — YYYY-MM-DD
+     type  — "reading" or "house"
+     meta  — author + translator, or the room. Optional.
+     body  — one string, or an array of strings for multiple paragraphs.
 
-   Three rules and it won't break again:
-
-     1. Every line inside a { } block ends with a comma — except the last
-        line before the closing brace.
-
-     2. Property names are plain lowercase words. No hyphens, no spaces.
-        Write   isbn:   not   ISBN-13:
-
-     3. Use straight quotes ( " ), never curly ones. Word and Notes swap
-        them silently. Edit in GitHub's editor or a code editor instead.
-
-   Dates are YYYY-MM-DD. Optional fields can be left as "" or deleted.
+   Everything below this block is machinery. You never need to touch it.
    ===================================================================== */
 
-var SITE = {
-  name:   "Index",
-  right:  "-",
-  footL:  "-",
-  footR:  "-"
-};
+var ENTRIES = [
 
-var PAGES = {
-
-  index: {
-    eyebrow: "Personal site",
-    title:   "A place to<br>put things<br>down",
-    lede:    "Mostly a record of what I'm reading and what I'm doing to a house. Kept so I can remember what I decided and why."
-  },
-
-  reading: {
-    title:  "Reading",
-    intro:  "Started, finished, and abandoned. The abandoned ones are usually more informative."
-  },
-
-  house: {
-    title:  "House",
-    intro:  "An ongoing renovation. Decisions, costs, and the things I'd do differently."
-  },
-
-  about: {
-    title: "About",
-    body: [
-      "A paragraph about who you are. Replace this.",
-      "A second paragraph, if you want one. Keep it shorter than feels right — the constraint is the point.",
-      "Somewhere to reach you, if you want that: <a class=\"link\" href=\"mailto:you@example.com\">email</a>."
-    ]
-  }
-
-};
-
-/* --- what I'm reading ---------------------------------------------
-   status can be:  reading  /  finished  /  abandoned
-   isbn is optional — delete the line entirely if you don't want it
-   ------------------------------------------------------------------ */
-
-var READING = [
   {
-    date:   "2026-07-20",
-    title:  "The Catcher in the Rye",
-    author: "J. D. Salinger",
-    isbn:   "978-0241950432",
-    status: "reading",
-    note:   "So so, so far. Somewhat annoying ramblings of a private school kid."
-  },
-  {
-    date:   "2026-06-30",
-    title:  "Another placeholder",
-    author: "Author name",
-    status: "finished",
-    note:   ""
-  },
-  {
-    date:   "2026-06-12",
-    title:  "A third",
-    author: "Author name",
-    status: "abandoned",
-    note:   "Stopped at page ninety. Worth recording why."
-  }
-];
-
-/* --- the house ---------------------------------------------------- */
-
-var HOUSE = [
-  {
-    date:  "2026-07-18",
+    date: "2026-07-22",
+    type: "reading",
     title: "Placeholder entry",
-    room:  "Sitting room",
-    note:  "What was done, what it cost, what you'd change."
+    meta: "Author, tr. Translator",
+    body: [
+      "Replace this with something you actually read. Two or three sentences is plenty — the format works better when entries are short enough that writing one isn't a project.",
+      "A second paragraph, to show what that looks like."
+    ]
   },
+
   {
-    date:  "2026-07-02",
+    date: "2026-07-18",
+    type: "house",
+    title: "Second coat of limewash",
+    meta: "Sitting room",
+    body: "Placeholder. Notes on what was done, what it cost, and what you'd do differently. The useful entries are usually the ones recording a decision you'll otherwise forget the reasoning for."
+  },
+
+  {
+    date: "2026-07-11",
+    type: "reading",
     title: "Another placeholder",
-    room:  "Ground floor",
-    note:  ""
+    meta: "Abandoned at p. 90",
+    body: "Abandoned books are worth logging too. They're often more informative than the finished ones."
+  },
+
+  {
+    date: "2026-07-02",
+    type: "house",
+    title: "Flooring quotes",
+    meta: "Ground floor",
+    body: "Placeholder. Three quotes, the spread between them, and which one won."
   }
+
 ];
 
-/* ================= machinery below — no need to edit ================= */
+/* ---------------------------------------------------------------- */
 
 (function(){
   "use strict";
 
-  function fail(e){
-    var box = document.getElementById('err');
-    var msg = document.getElementById('errMsg');
-    if (box && msg){
-      msg.textContent = (e && e.message) ? e.message : String(e);
-      box.style.display = 'block';
-    }
-    if (window.console && console.error) console.error(e);
+  var MONTHS = ["JAN","FEB","MAR","APR","MAY","JUN",
+                "JUL","AUG","SEP","OCT","NOV","DEC"];
+
+  var feed    = document.getElementById('feed');
+  var countEl = document.getElementById('count');
+  var buttons = Array.prototype.slice.call(
+                  document.querySelectorAll('.filter button'));
+
+  var active = 'all';
+
+  function formatDate(iso){
+    var p = iso.split('-');
+    return parseInt(p[2], 10) + ' ' + MONTHS[parseInt(p[1], 10) - 1] + ' ' + p[0];
   }
 
-  try {
+  function esc(s){
+    return String(s)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
 
-    var ROUTES = [
-      { id:"index",   label:"Index"   },
-      { id:"reading", label:"Reading" },
-      { id:"house",   label:"House"   },
-      { id:"about",   label:"About"   }
-    ];
+  function paragraphs(body){
+    if (!body) return '';
+    var arr = Array.isArray(body) ? body : [body];
+    return arr.map(function(t){ return '<p>' + esc(t) + '</p>'; }).join('');
+  }
 
-    var MONTHS = ["JAN","FEB","MAR","APR","MAY","JUN",
-                  "JUL","AUG","SEP","OCT","NOV","DEC"];
-
-    function $(id){ return document.getElementById(id); }
-
-    function esc(s){
-      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    }
-
-    function fdate(iso){
-      if (!iso) return '';
-      var p = String(iso).split('-');
-      if (p.length !== 3) return String(iso);
-      var m = MONTHS[parseInt(p[1],10) - 1] || '';
-      return parseInt(p[2],10) + ' ' + m + ' ' + p[0];
-    }
-
-    function paras(body){
-      if (!body) return '';
-      var arr = Array.isArray(body) ? body : [body];
-      return arr.map(function(t){ return '<p>' + t + '</p>'; }).join('');
-    }
-
-    function byDateDesc(a,b){
+  function render(){
+    var list = ENTRIES.slice().sort(function(a, b){
       return a.date < b.date ? 1 : (a.date > b.date ? -1 : 0);
+    });
+
+    if (active !== 'all'){
+      list = list.filter(function(e){ return e.type === active; });
     }
 
-    /* ---------- chrome ---------- */
+    countEl.textContent = list.length + (list.length === 1 ? ' entry' : ' entries');
 
-    $('siteName').textContent  = SITE.name;
-    $('siteRight').textContent = SITE.right;
-    $('footLeft').textContent  = SITE.footL;
-    $('footRight').textContent = SITE.footR;
+    if (!list.length){
+      feed.innerHTML = '<div class="empty">Nothing under this filter yet.</div>';
+      return;
+    }
 
-    $('nav').innerHTML = ROUTES.map(function(r){
-      return '<a href="#/' + r.id + '" data-route="' + r.id + '">' + r.label + '</a>';
-    }).join('');
-
-    /* ---------- panels ---------- */
-
-    $('idxEyebrow').textContent = PAGES.index.eyebrow;
-    $('idxTitle').innerHTML     = PAGES.index.title;
-    $('idxLede').textContent    = PAGES.index.lede;
-
-    $('readTitle').textContent  = PAGES.reading.title;
-    $('readIntro').textContent  = PAGES.reading.intro;
-
-    $('houseTitle').textContent = PAGES.house.title;
-    $('houseIntro').textContent = PAGES.house.intro;
-
-    $('aboutTitle').textContent = PAGES.about.title;
-    $('aboutBody').innerHTML    = paras(PAGES.about.body);
-
-    function row(rail, tag, title, meta, note){
-      return '<article class="row">' +
-               '<div class="row__rail">' + esc(rail) +
-                 (tag ? '<br><span class="tag">' + esc(tag) + '</span>' : '') +
+    feed.innerHTML = list.map(function(e){
+      return '<article class="entry">' +
+               '<div class="entry__rail">' +
+                 formatDate(e.date) +
+                 '<br><span class="tag">' + esc(e.type) + '</span>' +
                '</div>' +
-               '<div>' +
-                 '<h3>' + esc(title) + '</h3>' +
-                 (meta ? '<p class="row__meta">' + esc(meta) + '</p>' : '') +
-                 (note ? '<p class="row__note">' + esc(note) + '</p>' : '') +
+               '<div class="entry__body">' +
+                 '<h2>' + esc(e.title) + '</h2>' +
+                 (e.meta ? '<p class="entry__meta">' + esc(e.meta) + '</p>' : '') +
+                 paragraphs(e.body) +
                '</div>' +
              '</article>';
-    }
-
-    function fill(el, items, empty){
-      el.innerHTML = items.length
-        ? items.join('')
-        : '<div class="empty">' + empty + '</div>';
-    }
-
-    var reading = READING.slice().sort(byDateDesc);
-    var house   = HOUSE.slice().sort(byDateDesc);
-
-    fill($('readingList'), reading.map(function(b){
-      var meta = [b.author, b.isbn].filter(Boolean).join('  \u00B7  ');
-      return row(fdate(b.date), b.status, b.title, meta, b.note);
-    }), 'Nothing logged yet.');
-
-    fill($('houseList'), house.map(function(h){
-      return row(fdate(h.date), h.room, h.title, '', h.note);
-    }), 'Nothing logged yet.');
-
-    $('readCount').textContent  = reading.length + (reading.length === 1 ? ' item' : ' items');
-    $('houseCount').textContent = house.length  + (house.length  === 1 ? ' item' : ' items');
-
-    var recent = reading.map(function(b){
-        return { date:b.date, kind:'reading', title:b.title, meta:b.author };
-      }).concat(house.map(function(h){
-        return { date:h.date, kind:'house', title:h.title, meta:h.room };
-      })).sort(byDateDesc).slice(0, 4);
-
-    fill($('recent'), recent.map(function(r){
-      return row(fdate(r.date), r.kind, r.title, r.meta, '');
-    }), 'Nothing yet.');
-
-    /* ---------- router ---------- */
-
-    var panels   = Array.prototype.slice.call(document.querySelectorAll('.panel'));
-    var navLinks = Array.prototype.slice.call(document.querySelectorAll('nav a'));
-
-    function current(){
-      var id = (location.hash || '').replace(/^#\/?/, '');
-      var ok = ROUTES.some(function(r){ return r.id === id; });
-      return ok ? id : 'index';
-    }
-
-    function show(){
-      var id = current();
-
-      panels.forEach(function(p){
-        p.classList.toggle('is-active', p.getAttribute('data-route') === id);
-      });
-
-      navLinks.forEach(function(a){
-        if (a.getAttribute('data-route') === id) a.setAttribute('aria-current','page');
-        else a.removeAttribute('aria-current');
-      });
-
-      var match = ROUTES.filter(function(r){ return r.id === id; })[0];
-      document.title = SITE.name + ' — ' + (match ? match.label : '');
-
-      window.scrollTo(0, 0);
-    }
-
-    window.addEventListener('hashchange', show);
-    show();
-
-  } catch (e) {
-    fail(e);
+    }).join('');
   }
+
+  buttons.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      active = btn.getAttribute('data-filter');
+      buttons.forEach(function(b){
+        b.setAttribute('aria-pressed', String(b === btn));
+      });
+      render();
+      dogRender();
+    });
+  });
+
+  render();
+
+  /* ---------- scroll-linked runner ---------- */
+
+  var BODY = [
+"    /\\_             ______",
+"   /   \\___________/      \\",
+"   \\                   o   |",
+"    |                     _/"
+  ];
+
+  var LEGS = [
+    ["   /|         |\\      |", "  / |         | \\     |"],
+    ["   ||         ||      |", "   ||         ||      |"],
+    ["   |\\         /|      |", "   | \\       / |      |"],
+    ["   //         \\\\      |", "  //           \\\\     |"]
+  ];
+
+  var STAND = ["   ||         ||      |", "   ||         ||      |"];
+
+  var STRIDE  = 34;
+  var dog     = document.getElementById('dog');
+  var track   = document.querySelector('.runner__track');
+  var reduce  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var lastY = window.scrollY, travelled = 0, frame = 0, facing = 1, ticking = false;
+
+  function draw(legs){ dog.textContent = BODY.concat(legs).join('\n'); }
+
+  function dogRender(){
+    ticking = false;
+
+    var y   = window.scrollY;
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    var p   = max > 0 ? Math.min(Math.max(y / max, 0), 1) : 0;
+    var d   = y - lastY;
+
+    if (Math.abs(d) > 0.5){
+      facing = d > 0 ? 1 : -1;
+      if (!reduce){
+        travelled += Math.abs(d);
+        if (travelled >= STRIDE){
+          var steps = Math.floor(travelled / STRIDE);
+          frame = (frame + steps) % LEGS.length;
+          travelled -= steps * STRIDE;
+          draw(LEGS[frame]);
+        }
+      }
+    }
+    lastY = y;
+
+    var span = Math.max(0, track.clientWidth - dog.offsetWidth);
+    dog.style.transform =
+      'translateX(' + (p * span).toFixed(2) + 'px) scaleX(' + facing + ')';
+  }
+
+  function onScroll(){
+    if (!ticking){ requestAnimationFrame(dogRender); ticking = true; }
+  }
+
+  draw(reduce ? STAND : LEGS[0]);
+  window.addEventListener('scroll', onScroll, { passive:true });
+  window.addEventListener('resize', dogRender);
+  dogRender();
 })();
 </script>
 
