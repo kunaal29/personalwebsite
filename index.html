@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Index</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FFFFFF;
+    --ink:#000000;
+    --display:"Instrument Serif","Times New Roman",Times,Georgia,serif;
+    --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--mono);
+    font-size:14px;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  ::selection{background:var(--ink);color:var(--paper);}
+  :focus-visible{outline:2px solid var(--ink);outline-offset:2px;}
+
+  a{color:inherit;text-decoration:none;}
+  a.link{border-bottom:1px solid var(--ink);}
+  a.link:hover{background:var(--ink);color:var(--paper);}
+
+  .frame{
+    border:1px solid var(--ink);
+    margin:0.75rem;
+    min-height:calc(100vh - 1.5rem);
+    display:flex;
+    flex-direction:column;
+  }
+
+  /* ---------- masthead ---------- */
+
+  .bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:1rem;
+    padding:0.55rem 1.1rem;
+    border-bottom:1px solid var(--ink);
+    font-size:0.625rem;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+  }
+
+  /* ---------- nav ---------- */
+
+  nav{
+    display:flex;
+    border-bottom:1px solid var(--ink);
+  }
+
+  nav a{
+    flex:1;
+    text-align:center;
+    font-size:0.625rem;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    padding:0.75rem 0.4rem;
+    border-right:1px solid var(--ink);
+  }
+  nav a:last-child{border-right:none;}
+  nav a:hover{background:#f1f1f1;}
+  nav a[aria-current="page"]{background:var(--ink);color:var(--paper);}
+
+  /* ---------- panels ---------- */
+
+  main{flex:1;}
+
+  .panel{display:none;}
+  .panel.is-active{display:block;}
+
+  .pad{padding:2.75rem 1.25rem;}
+  @media (min-width:760px){ .pad{padding:4rem 2.25rem;} }
+
+  h1{
+    font-family:var(--display);
+    font-weight:400;
+    font-size:clamp(2.5rem,10vw,4.75rem);
+    line-height:0.92;
+    letter-spacing:-0.015em;
+    margin:0 0 1.25rem;
+  }
+
+  h2{
+    font-family:var(--display);
+    font-weight:400;
+    font-size:clamp(1.625rem,5vw,2.25rem);
+    line-height:1.02;
+    letter-spacing:-0.01em;
+    margin:0 0 1rem;
+  }
+
+  h3{
+    font-family:var(--display);
+    font-weight:400;
+    font-size:1.375rem;
+    line-height:1.1;
+    margin:0 0 0.3rem;
+  }
+
+  .eyebrow{
+    font-size:0.625rem;
+    letter-spacing:0.24em;
+    text-transform:uppercase;
+    margin:0 0 1.75rem;
+  }
+
+  p{
+    font-size:0.8125rem;
+    line-height:1.8;
+    max-width:34rem;
+    margin:0 0 1rem;
+  }
+  p.lede{
+    font-family:var(--display);
+    font-size:clamp(1.0625rem,2.8vw,1.3125rem);
+    line-height:1.4;
+    max-width:30rem;
+  }
+  p:last-child{margin-bottom:0;}
+
+  hr{
+    border:none;
+    border-top:1px solid var(--ink);
+    margin:0;
+  }
+
+  /* ---------- lists ---------- */
+
+  .row{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:0.35rem;
+    padding:1.35rem 1.25rem;
+    border-bottom:1px solid var(--ink);
+  }
+  @media (min-width:760px){
+    .row{
+      grid-template-columns:8.5rem 1fr;
+      gap:2rem;
+      padding:1.5rem 2.25rem;
+    }
+  }
+  .row:last-child{border-bottom:none;}
+
+  .row__rail{
+    font-size:0.625rem;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+  }
+
+  .tag{
+    display:inline-block;
+    border:1px solid var(--ink);
+    padding:0.05rem 0.4rem;
+    font-size:0.5625rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+  }
+
+  .row__meta{
+    font-size:0.6875rem;
+    opacity:0.7;
+    margin:0 0 0.55rem;
+  }
+
+  .row__note{
+    font-size:0.8125rem;
+    line-height:1.75;
+    max-width:34rem;
+    margin:0;
+  }
+
+  .section-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:1rem;
+    padding:1.1rem 1.25rem;
+    border-bottom:1px solid var(--ink);
+    font-size:0.625rem;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+  }
+  @media (min-width:760px){
+    .section-head{padding:1.1rem 2.25rem;}
+  }
+
+  .empty{
+    padding:3.5rem 1.25rem;
+    font-size:0.8125rem;
+    opacity:0.6;
+  }
+  @media (min-width:760px){ .empty{padding:3.5rem 2.25rem;} }
+
+  footer{
+    padding:0.55rem 1.1rem;
+    border-top:1px solid var(--ink);
+    display:flex;
+    justify-content:space-between;
+    font-size:0.625rem;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+  }
+</style>
+</head>
+<body>
+
+<div class="frame">
+
+  <div class="bar">
+    <span id="siteName">—</span>
+    <span id="siteRight">—</span>
+  </div>
+
+  <nav id="nav" aria-label="Sections"></nav>
+
+  <main>
+
+    <!-- INDEX -->
+    <section class="panel" data-route="index">
+      <div class="pad">
+        <p class="eyebrow" id="idxEyebrow"></p>
+        <h1 id="idxTitle"></h1>
+        <p class="lede" id="idxLede"></p>
+      </div>
+      <hr>
+      <div class="section-head">
+        <span>Recently</span>
+        <span>Latest four</span>
+      </div>
+      <div id="recent"></div>
+    </section>
+
+    <!-- READING -->
+    <section class="panel" data-route="reading">
+      <div class="pad">
+        <p class="eyebrow">Section 02</p>
+        <h2 id="readTitle"></h2>
+        <p id="readIntro"></p>
+      </div>
+      <hr>
+      <div class="section-head">
+        <span>The list</span>
+        <span id="readCount"></span>
+      </div>
+      <div id="readingList"></div>
+    </section>
+
+    <!-- HOUSE -->
+    <section class="panel" data-route="house">
+      <div class="pad">
+        <p class="eyebrow">Section 03</p>
+        <h2 id="houseTitle"></h2>
+        <p id="houseIntro"></p>
+      </div>
+      <hr>
+      <div class="section-head">
+        <span>Entries</span>
+        <span id="houseCount"></span>
+      </div>
+      <div id="houseList"></div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="panel" data-route="about">
+      <div class="pad">
+        <p class="eyebrow">Section 04</p>
+        <h2 id="aboutTitle"></h2>
+        <div id="aboutBody"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <span id="footLeft">—</span>
+    <span id="footRight">—</span>
+  </footer>
+
+</div>
+
+<script>
+/* =====================================================================
+   EVERYTHING YOU EDIT IS IN THIS BLOCK.
+
+   Add a reading entry     -> READING array
+   Add a renovation entry  -> HOUSE array
+   Change the wording      -> SITE and PAGES objects
+
+   Dates are YYYY-MM-DD. `note` is optional everywhere and can be a
+   single string or an array of strings for multiple paragraphs.
+   ===================================================================== */
+
+var SITE = {
+  name:   "Index",
+  right:  "Buckinghamshire",
+  footL:  "Static",
+  footR:  "No analytics"
+};
+
+var PAGES = {
+
+  index: {
+    eyebrow: "Personal site",
+    title:   "A place to<br>put things<br>down",
+    lede:    "Mostly a record of what I'm reading and what I'm doing to a house. Kept so I can remember what I decided and why."
+  },
+
+  reading: {
+    title:  "Reading",
+    intro:  "Started, finished, and abandoned. The abandoned ones are usually more informative."
+  },
+
+  house: {
+    title:  "House",
+    intro:  "An ongoing renovation. Decisions, costs, and the things I'd do differently."
+  },
+
+  about: {
+    title: "About",
+    body: [
+      "A paragraph about who you are. Replace this.",
+      "A second paragraph, if you want one. Keep it shorter than feels right — the constraint is the point.",
+      "Somewhere to reach you, if you want that: <a class=\"link\" href=\"mailto:you@example.com\">email</a>."
+    ]
+  }
+
+};
+
+/* --- what I'm reading -------------------------------------------- */
+
+var READING = [
+  {
+    date:   "2026-07-20",
+    title:  "Placeholder",
+    author: "Author name, tr. Translator",
+    status: "reading",
+    note:   "Two or three sentences. Short enough that writing one isn't a project."
+  },
+  {
+    date:   "2026-06-30",
+    title:  "Another placeholder",
+    author: "Author name",
+    status: "finished",
+    note:   ""
+  },
+  {
+    date:   "2026-06-12",
+    title:  "A third",
+    author: "Author name",
+    status: "abandoned",
+    note:   "Stopped at page ninety. Worth recording why."
+  }
+];
+
+/* --- the house ---------------------------------------------------- */
+
+var HOUSE = [
+  {
+    date:  "2026-07-18",
+    title: "Placeholder entry",
+    room:  "Sitting room",
+    note:  "What was done, what it cost, what you'd change."
+  },
+  {
+    date:  "2026-07-02",
+    title: "Another placeholder",
+    room:  "Ground floor",
+    note:  ""
+  }
+];
+
+/* ================= machinery below — no need to edit ================= */
+
+(function(){
+  "use strict";
+
+  var ROUTES = [
+    { id:"index",   label:"Index"   },
+    { id:"reading", label:"Reading" },
+    { id:"house",   label:"House"   },
+    { id:"about",   label:"About"   }
+  ];
+
+  var MONTHS = ["JAN","FEB","MAR","APR","MAY","JUN",
+                "JUL","AUG","SEP","OCT","NOV","DEC"];
+
+  function $(id){ return document.getElementById(id); }
+
+  function esc(s){
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function fdate(iso){
+    var p = iso.split('-');
+    return parseInt(p[2],10) + ' ' + MONTHS[parseInt(p[1],10)-1] + ' ' + p[0];
+  }
+
+  function paras(body){
+    if (!body) return '';
+    var arr = Array.isArray(body) ? body : [body];
+    return arr.map(function(t){ return '<p>' + t + '</p>'; }).join('');
+  }
+
+  function byDateDesc(a,b){
+    return a.date < b.date ? 1 : (a.date > b.date ? -1 : 0);
+  }
+
+  /* ---------- chrome ---------- */
+
+  $('siteName').textContent  = SITE.name;
+  $('siteRight').textContent = SITE.right;
+  $('footLeft').textContent  = SITE.footL;
+  $('footRight').textContent = SITE.footR;
+
+  $('nav').innerHTML = ROUTES.map(function(r){
+    return '<a href="#/' + r.id + '" data-route="' + r.id + '">' + r.label + '</a>';
+  }).join('');
+
+  /* ---------- panels ---------- */
+
+  $('idxEyebrow').textContent = PAGES.index.eyebrow;
+  $('idxTitle').innerHTML     = PAGES.index.title;
+  $('idxLede').textContent    = PAGES.index.lede;
+
+  $('readTitle').textContent  = PAGES.reading.title;
+  $('readIntro').textContent  = PAGES.reading.intro;
+
+  $('houseTitle').textContent = PAGES.house.title;
+  $('houseIntro').textContent = PAGES.house.intro;
+
+  $('aboutTitle').textContent = PAGES.about.title;
+  $('aboutBody').innerHTML    = paras(PAGES.about.body);
+
+  function row(rail, tag, title, meta, note){
+    return '<article class="row">' +
+             '<div class="row__rail">' + esc(rail) +
+               (tag ? '<br><span class="tag">' + esc(tag) + '</span>' : '') +
+             '</div>' +
+             '<div>' +
+               '<h3>' + esc(title) + '</h3>' +
+               (meta ? '<p class="row__meta">' + esc(meta) + '</p>' : '') +
+               (note ? '<p class="row__note">' + esc(note) + '</p>' : '') +
+             '</div>' +
+           '</article>';
+  }
+
+  function fill(el, items, empty){
+    el.innerHTML = items.length
+      ? items.join('')
+      : '<div class="empty">' + empty + '</div>';
+  }
+
+  var reading = READING.slice().sort(byDateDesc);
+  var house   = HOUSE.slice().sort(byDateDesc);
+
+  fill($('readingList'), reading.map(function(b){
+    return row(fdate(b.date), b.status, b.title, b.author, b.note);
+  }), 'Nothing logged yet.');
+
+  fill($('houseList'), house.map(function(h){
+    return row(fdate(h.date), h.room, h.title, '', h.note);
+  }), 'Nothing logged yet.');
+
+  $('readCount').textContent  = reading.length + (reading.length === 1 ? ' item' : ' items');
+  $('houseCount').textContent = house.length  + (house.length  === 1 ? ' item' : ' items');
+
+  var recent = reading.map(function(b){
+      return { date:b.date, kind:'reading', title:b.title, meta:b.author };
+    }).concat(house.map(function(h){
+      return { date:h.date, kind:'house', title:h.title, meta:h.room };
+    })).sort(byDateDesc).slice(0, 4);
+
+  fill($('recent'), recent.map(function(r){
+    return row(fdate(r.date), r.kind, r.title, r.meta, '');
+  }), 'Nothing yet.');
+
+  /* ---------- router ---------- */
+
+  var panels   = Array.prototype.slice.call(document.querySelectorAll('.panel'));
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('nav a'));
+
+  function current(){
+    var id = (location.hash || '').replace(/^#\/?/, '');
+    var ok = ROUTES.some(function(r){ return r.id === id; });
+    return ok ? id : 'index';
+  }
+
+  function show(){
+    var id = current();
+
+    panels.forEach(function(p){
+      p.classList.toggle('is-active', p.getAttribute('data-route') === id);
+    });
+
+    navLinks.forEach(function(a){
+      if (a.getAttribute('data-route') === id) a.setAttribute('aria-current','page');
+      else a.removeAttribute('aria-current');
+    });
+
+    var label = ROUTES.filter(function(r){ return r.id === id; })[0].label;
+    document.title = SITE.name + ' — ' + label;
+
+    window.scrollTo(0, 0);
+  }
+
+  window.addEventListener('hashchange', show);
+  show();
+})();
+</script>
+
+</body>
+</html>
