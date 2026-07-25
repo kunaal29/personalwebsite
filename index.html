@@ -216,9 +216,41 @@
     letter-spacing:0.2em;
     text-transform:uppercase;
   }
+
+  /* ---------- error notice ---------- */
+
+  #err{
+    display:none;
+    margin:0.75rem;
+    border:1px solid var(--ink);
+    padding:1.25rem;
+    font-size:0.8125rem;
+    line-height:1.7;
+  }
+  #err h2{
+    font-family:var(--display);
+    font-weight:400;
+    font-size:1.5rem;
+    margin:0 0 0.5rem;
+  }
+  #err p{margin:0;}
+  #err pre{
+    font-family:var(--mono);
+    font-size:0.75rem;
+    white-space:pre-wrap;
+    background:#f1f1f1;
+    padding:0.75rem;
+    margin:0.75rem 0 0;
+  }
 </style>
 </head>
 <body>
+
+<div id="err">
+  <h2>The page couldn't start</h2>
+  <p>Something in the content block at the top of the file isn't valid. Usual causes: a missing comma between entries, curly quotes pasted from a word processor, or a property name containing a hyphen or a space without quotes around it.</p>
+  <pre id="errMsg"></pre>
+</div>
 
 <div class="frame">
 
@@ -302,8 +334,18 @@
    Add a renovation entry  -> HOUSE array
    Change the wording      -> SITE and PAGES objects
 
-   Dates are YYYY-MM-DD. `note` is optional everywhere and can be a
-   single string or an array of strings for multiple paragraphs.
+   Three rules and it won't break again:
+
+     1. Every line inside a { } block ends with a comma — except the last
+        line before the closing brace.
+
+     2. Property names are plain lowercase words. No hyphens, no spaces.
+        Write   isbn:   not   ISBN-13:
+
+     3. Use straight quotes ( " ), never curly ones. Word and Notes swap
+        them silently. Edit in GitHub's editor or a code editor instead.
+
+   Dates are YYYY-MM-DD. Optional fields can be left as "" or deleted.
    ===================================================================== */
 
 var SITE = {
@@ -342,16 +384,19 @@ var PAGES = {
 
 };
 
-/* --- what I'm reading -------------------------------------------- */
+/* --- what I'm reading ---------------------------------------------
+   status can be:  reading  /  finished  /  abandoned
+   isbn is optional — delete the line entirely if you don't want it
+   ------------------------------------------------------------------ */
 
 var READING = [
   {
     date:   "2026-07-20",
     title:  "The Catcher in the Rye",
-    isbn:  "978-0241950432",
     author: "J. D. Salinger",
+    isbn:   "978-0241950432",
     status: "reading",
-    note:   "So so, so far. Somewhat annoying ramblings of a private school kid"
+    note:   "So so, so far. Somewhat annoying ramblings of a private school kid."
   },
   {
     date:   "2026-06-30",
@@ -391,137 +436,157 @@ var HOUSE = [
 (function(){
   "use strict";
 
-  var ROUTES = [
-    { id:"index",   label:"Index"   },
-    { id:"reading", label:"Reading" },
-    { id:"house",   label:"House"   },
-    { id:"about",   label:"About"   }
-  ];
-
-  var MONTHS = ["JAN","FEB","MAR","APR","MAY","JUN",
-                "JUL","AUG","SEP","OCT","NOV","DEC"];
-
-  function $(id){ return document.getElementById(id); }
-
-  function esc(s){
-    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  function fail(e){
+    var box = document.getElementById('err');
+    var msg = document.getElementById('errMsg');
+    if (box && msg){
+      msg.textContent = (e && e.message) ? e.message : String(e);
+      box.style.display = 'block';
+    }
+    if (window.console && console.error) console.error(e);
   }
 
-  function fdate(iso){
-    var p = iso.split('-');
-    return parseInt(p[2],10) + ' ' + MONTHS[parseInt(p[1],10)-1] + ' ' + p[0];
+  try {
+
+    var ROUTES = [
+      { id:"index",   label:"Index"   },
+      { id:"reading", label:"Reading" },
+      { id:"house",   label:"House"   },
+      { id:"about",   label:"About"   }
+    ];
+
+    var MONTHS = ["JAN","FEB","MAR","APR","MAY","JUN",
+                  "JUL","AUG","SEP","OCT","NOV","DEC"];
+
+    function $(id){ return document.getElementById(id); }
+
+    function esc(s){
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    function fdate(iso){
+      if (!iso) return '';
+      var p = String(iso).split('-');
+      if (p.length !== 3) return String(iso);
+      var m = MONTHS[parseInt(p[1],10) - 1] || '';
+      return parseInt(p[2],10) + ' ' + m + ' ' + p[0];
+    }
+
+    function paras(body){
+      if (!body) return '';
+      var arr = Array.isArray(body) ? body : [body];
+      return arr.map(function(t){ return '<p>' + t + '</p>'; }).join('');
+    }
+
+    function byDateDesc(a,b){
+      return a.date < b.date ? 1 : (a.date > b.date ? -1 : 0);
+    }
+
+    /* ---------- chrome ---------- */
+
+    $('siteName').textContent  = SITE.name;
+    $('siteRight').textContent = SITE.right;
+    $('footLeft').textContent  = SITE.footL;
+    $('footRight').textContent = SITE.footR;
+
+    $('nav').innerHTML = ROUTES.map(function(r){
+      return '<a href="#/' + r.id + '" data-route="' + r.id + '">' + r.label + '</a>';
+    }).join('');
+
+    /* ---------- panels ---------- */
+
+    $('idxEyebrow').textContent = PAGES.index.eyebrow;
+    $('idxTitle').innerHTML     = PAGES.index.title;
+    $('idxLede').textContent    = PAGES.index.lede;
+
+    $('readTitle').textContent  = PAGES.reading.title;
+    $('readIntro').textContent  = PAGES.reading.intro;
+
+    $('houseTitle').textContent = PAGES.house.title;
+    $('houseIntro').textContent = PAGES.house.intro;
+
+    $('aboutTitle').textContent = PAGES.about.title;
+    $('aboutBody').innerHTML    = paras(PAGES.about.body);
+
+    function row(rail, tag, title, meta, note){
+      return '<article class="row">' +
+               '<div class="row__rail">' + esc(rail) +
+                 (tag ? '<br><span class="tag">' + esc(tag) + '</span>' : '') +
+               '</div>' +
+               '<div>' +
+                 '<h3>' + esc(title) + '</h3>' +
+                 (meta ? '<p class="row__meta">' + esc(meta) + '</p>' : '') +
+                 (note ? '<p class="row__note">' + esc(note) + '</p>' : '') +
+               '</div>' +
+             '</article>';
+    }
+
+    function fill(el, items, empty){
+      el.innerHTML = items.length
+        ? items.join('')
+        : '<div class="empty">' + empty + '</div>';
+    }
+
+    var reading = READING.slice().sort(byDateDesc);
+    var house   = HOUSE.slice().sort(byDateDesc);
+
+    fill($('readingList'), reading.map(function(b){
+      var meta = [b.author, b.isbn].filter(Boolean).join('  \u00B7  ');
+      return row(fdate(b.date), b.status, b.title, meta, b.note);
+    }), 'Nothing logged yet.');
+
+    fill($('houseList'), house.map(function(h){
+      return row(fdate(h.date), h.room, h.title, '', h.note);
+    }), 'Nothing logged yet.');
+
+    $('readCount').textContent  = reading.length + (reading.length === 1 ? ' item' : ' items');
+    $('houseCount').textContent = house.length  + (house.length  === 1 ? ' item' : ' items');
+
+    var recent = reading.map(function(b){
+        return { date:b.date, kind:'reading', title:b.title, meta:b.author };
+      }).concat(house.map(function(h){
+        return { date:h.date, kind:'house', title:h.title, meta:h.room };
+      })).sort(byDateDesc).slice(0, 4);
+
+    fill($('recent'), recent.map(function(r){
+      return row(fdate(r.date), r.kind, r.title, r.meta, '');
+    }), 'Nothing yet.');
+
+    /* ---------- router ---------- */
+
+    var panels   = Array.prototype.slice.call(document.querySelectorAll('.panel'));
+    var navLinks = Array.prototype.slice.call(document.querySelectorAll('nav a'));
+
+    function current(){
+      var id = (location.hash || '').replace(/^#\/?/, '');
+      var ok = ROUTES.some(function(r){ return r.id === id; });
+      return ok ? id : 'index';
+    }
+
+    function show(){
+      var id = current();
+
+      panels.forEach(function(p){
+        p.classList.toggle('is-active', p.getAttribute('data-route') === id);
+      });
+
+      navLinks.forEach(function(a){
+        if (a.getAttribute('data-route') === id) a.setAttribute('aria-current','page');
+        else a.removeAttribute('aria-current');
+      });
+
+      var match = ROUTES.filter(function(r){ return r.id === id; })[0];
+      document.title = SITE.name + ' — ' + (match ? match.label : '');
+
+      window.scrollTo(0, 0);
+    }
+
+    window.addEventListener('hashchange', show);
+    show();
+
+  } catch (e) {
+    fail(e);
   }
-
-  function paras(body){
-    if (!body) return '';
-    var arr = Array.isArray(body) ? body : [body];
-    return arr.map(function(t){ return '<p>' + t + '</p>'; }).join('');
-  }
-
-  function byDateDesc(a,b){
-    return a.date < b.date ? 1 : (a.date > b.date ? -1 : 0);
-  }
-
-  /* ---------- chrome ---------- */
-
-  $('siteName').textContent  = SITE.name;
-  $('siteRight').textContent = SITE.right;
-  $('footLeft').textContent  = SITE.footL;
-  $('footRight').textContent = SITE.footR;
-
-  $('nav').innerHTML = ROUTES.map(function(r){
-    return '<a href="#/' + r.id + '" data-route="' + r.id + '">' + r.label + '</a>';
-  }).join('');
-
-  /* ---------- panels ---------- */
-
-  $('idxEyebrow').textContent = PAGES.index.eyebrow;
-  $('idxTitle').innerHTML     = PAGES.index.title;
-  $('idxLede').textContent    = PAGES.index.lede;
-
-  $('readTitle').textContent  = PAGES.reading.title;
-  $('readIntro').textContent  = PAGES.reading.intro;
-
-  $('houseTitle').textContent = PAGES.house.title;
-  $('houseIntro').textContent = PAGES.house.intro;
-
-  $('aboutTitle').textContent = PAGES.about.title;
-  $('aboutBody').innerHTML    = paras(PAGES.about.body);
-
-  function row(rail, tag, title, meta, note){
-    return '<article class="row">' +
-             '<div class="row__rail">' + esc(rail) +
-               (tag ? '<br><span class="tag">' + esc(tag) + '</span>' : '') +
-             '</div>' +
-             '<div>' +
-               '<h3>' + esc(title) + '</h3>' +
-               (meta ? '<p class="row__meta">' + esc(meta) + '</p>' : '') +
-               (note ? '<p class="row__note">' + esc(note) + '</p>' : '') +
-             '</div>' +
-           '</article>';
-  }
-
-  function fill(el, items, empty){
-    el.innerHTML = items.length
-      ? items.join('')
-      : '<div class="empty">' + empty + '</div>';
-  }
-
-  var reading = READING.slice().sort(byDateDesc);
-  var house   = HOUSE.slice().sort(byDateDesc);
-
-  fill($('readingList'), reading.map(function(b){
-    return row(fdate(b.date), b.status, b.title, b.author, b.note);
-  }), 'Nothing logged yet.');
-
-  fill($('houseList'), house.map(function(h){
-    return row(fdate(h.date), h.room, h.title, '', h.note);
-  }), 'Nothing logged yet.');
-
-  $('readCount').textContent  = reading.length + (reading.length === 1 ? ' item' : ' items');
-  $('houseCount').textContent = house.length  + (house.length  === 1 ? ' item' : ' items');
-
-  var recent = reading.map(function(b){
-      return { date:b.date, kind:'reading', title:b.title, meta:b.author };
-    }).concat(house.map(function(h){
-      return { date:h.date, kind:'house', title:h.title, meta:h.room };
-    })).sort(byDateDesc).slice(0, 4);
-
-  fill($('recent'), recent.map(function(r){
-    return row(fdate(r.date), r.kind, r.title, r.meta, '');
-  }), 'Nothing yet.');
-
-  /* ---------- router ---------- */
-
-  var panels   = Array.prototype.slice.call(document.querySelectorAll('.panel'));
-  var navLinks = Array.prototype.slice.call(document.querySelectorAll('nav a'));
-
-  function current(){
-    var id = (location.hash || '').replace(/^#\/?/, '');
-    var ok = ROUTES.some(function(r){ return r.id === id; });
-    return ok ? id : 'index';
-  }
-
-  function show(){
-    var id = current();
-
-    panels.forEach(function(p){
-      p.classList.toggle('is-active', p.getAttribute('data-route') === id);
-    });
-
-    navLinks.forEach(function(a){
-      if (a.getAttribute('data-route') === id) a.setAttribute('aria-current','page');
-      else a.removeAttribute('aria-current');
-    });
-
-    var label = ROUTES.filter(function(r){ return r.id === id; })[0].label;
-    document.title = SITE.name + ' — ' + label;
-
-    window.scrollTo(0, 0);
-  }
-
-  window.addEventListener('hashchange', show);
-  show();
 })();
 </script>
 
